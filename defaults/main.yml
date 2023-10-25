@@ -1,0 +1,34 @@
+---
+# Credentials to play tasks
+freeipa_vms_server_fqdn: "ipa-url.example.com"
+freeipa_vms_server_principal: "admin"
+freeipa_vms_server_password: "strongpassword"
+
+# Ensure host is present and update values
+freeipa_vms_create_host: false
+freeipa_vms_hostname: "{{ ansible_fqdn }}"
+freeipa_vms_ip: "{{ ansible_default_ipv4.address }}"
+freeipa_vms_location: ""
+freeipa_vms_os: "{{ ansible_distribution }} {{ ansible_distribution_version }}"
+freeipa_vms_platform: "{{ ansible_virtualization_type }}"
+freeipa_vms_mac: ""
+
+#Ensure hostgroups exist and assign current host
+freeipa_vms_create_hostgroups: false
+freeipa_vms_hostgroups: "{{ group_names }}"
+#freeipa_vms_hostgroups:
+#  - scp_system
+#  - env_test
+#  - group_web
+#  - apps_nginx
+
+#Create empty hbarule for current host. (another role manage the user rights on them)
+freeipa_vms_hbarule_create: false
+freeipa_vms_hbarule_svc:
+  - sshd
+  - systemd-user
+  - sudo
+
+#Just remove the rule as the vm will be removed from the hostgroups when it will be deleted
+freeipa_vms_remove_host: false
+freeipa_vms_remove_hba_rule: false

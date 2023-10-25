@@ -1,0 +1,84 @@
+---
+- name: "Ensure host is present"
+  community.general.ipa_host:
+    name: "{{ freeipa_vms_hostname }}"
+    ip_address: "{{ freeipa_vms_ip }}"
+    ns_host_location: "{{ freeipa_vms_location }}"
+    ns_os_version: "{{ freeipa_vms_os }}"
+    ns_hardware_platform: "{{ freeipa_vms_platform }}"
+    mac_address: "{{ freeipa_vms_mac }}"
+    state: present
+    ipa_host: "{{ freeipa_vms_server_fqdn }}"
+    ipa_user: "{{ freeipa_vms_server_principal }}"
+    ipa_pass: "{{ freeipa_vms_server_password }}"
+  register: result
+  failed_when: >
+    (result.msg != "response host_mod: no modifications to be performed")
+  when:
+    - freeipa_vms_create_host is defined and freeipa_vms_create_host | bool
+  tags:
+    - host
+
+- name: "Ensure hostgroups exist with running hostname"
+  community.general.ipa_hostgroup:
+    name: "{{ item }}"
+    state: present
+    host:
+      - "{{ freeipa_vms_hostname }}"
+    append: true
+    ipa_host: "{{ freeipa_vms_server_fqdn }}"
+    ipa_user: "{{ freeipa_vms_server_principal }}"
+    ipa_pass: "{{ freeipa_vms_server_password }}"
+  with_items: "{{ freeipa_vms_hostgroups }}"
+  when:
+    - freeipa_vms_create_hostgroups is defined and freeipa_vms_create_hostgroups | bool
+    - freeipa_vms_hostgroups is defined and freeipa_vms_hostgroups | length > 0
+  tags:
+    - hostgroup
+
+- name: "Ensure an hba rule exist for running hostname"
+  community.general.ipa_hbacrule:
+    name: "{{ freeipa_vms_hostname }}"
+    description: "Specific access for {{ freeipa_vms_hostname }}"
+    service: "{{ freeipa_vms_hbarule_svc }}"
+    state: present
+    ipa_host: "{{ freeipa_vms_server_fqdn }}"
+    ipa_user: "{{ freeipa_vms_server_principal }}"
+    ipa_pass: "{{ freeipa_vms_server_password }}"
+  register: result
+  failed_when: >
+    (result.msg != "response hbacrule_mod: no modifications to be performed")
+  when:
+    - freeipa_vms_hbarule_create is defined and freeipa_vms_hbarule_create | bool
+    - freeipa_vms_hbarule_svc is defined and freeipa_vms_hbarule_svc | length > 0
+  tags:
+    - hbarule
+
+############################
+# Delete
+############################
+- name: "Ensure host is absent"
+  community.general.ipa_host:
+    name: "{{ freeipa_vms_hostname }}"
+    state: absent
+    ipa_host: "{{ freeipa_vms_server_fqdn }}"
+    ipa_user: "{{ freeipa_vms_server_principal }}"
+    ipa_pass: "{{ freeipa_vms_server_password }}"
+  when:
+    - freeipa_vms_remove_host is defined and freeipa_vms_remove_host | bool
+    - freeipa_vms_hostname != freeipa_vms_server_fqdn
+  tags:
+    - remove
+
+- name: "Ensure an hba rule DO NOT exist for running hostname"
+  community.general.ipa_hbacrule:
+    name: "{{ freeipa_vms_hostname }}"
+    description: "Specific access for {{ freeipa_vms_hostname }}"
+    service: "{{ freeipa_vms_hbarule_svc }}"
+    state: absent
+    ipa_host: "{{ freeipa_vms_server_fqdn }}"
+    ipa_user: "{{ freeipa_vms_server_principal }}"
+    ipa_pass: "{{ freeipa_vms_server_password }}"
+  when: freeipa_vms_remove_hba_rule is defined and freeipa_vms_remove_hba_rule | bool
+  tags:
+    - remove
