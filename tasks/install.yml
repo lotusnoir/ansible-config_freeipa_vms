@@ -13,7 +13,7 @@
     ipa_pass: "{{ freeipa_vms_server_password }}"
   register: result
   failed_when: >
-    (result.msg != "response host_mod: no modifications to be performed")
+    (result.msg is defined and result.msg != "response host_mod: no modifications to be performed")
   when:
     - freeipa_vms_create_host is defined and freeipa_vms_create_host | bool
   tags:
@@ -47,7 +47,7 @@
     ipa_pass: "{{ freeipa_vms_server_password }}"
   register: result
   failed_when: >
-    (result.msg != "response hbacrule_mod: no modifications to be performed")
+    (result.msg is defined and result.msg != "response hbacrule_mod: no modifications to be performed")
   when:
     - freeipa_vms_hbarule_create is defined and freeipa_vms_hbarule_create | bool
     - freeipa_vms_hbarule_svc is defined and freeipa_vms_hbarule_svc | length > 0
