@@ -24,10 +24,6 @@ freeipa_vms_hostgroups: "{{ group_names }}"
 
 #Create empty hbarule for current host. (another role manage the user rights on them)
 freeipa_vms_hbarule_create: false
-freeipa_vms_hbarule_svc:
-  - sshd
-  - systemd-user
-  - sudo
 
 #Just remove the rule as the vm will be removed from the hostgroups when it will be deleted
 freeipa_vms_remove_host: false

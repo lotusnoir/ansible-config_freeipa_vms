@@ -22,6 +22,7 @@
 - name: "Ensure hostgroups exist with running hostname"
   community.general.ipa_hostgroup:
     name: "{{ item }}"
+    #description: "Managed by ansible"
     state: present
     host:
       - "{{ freeipa_vms_hostname }}"
@@ -40,7 +41,8 @@
   community.general.ipa_hbacrule:
     name: "{{ freeipa_vms_hostname }}"
     description: "Specific access for {{ freeipa_vms_hostname }}"
-    service: "{{ freeipa_vms_hbarule_svc }}"
+    host: "{{ freeipa_vms_hostname }}"
+    servicecategory: "all"
     state: present
     ipa_host: "{{ freeipa_vms_server_fqdn }}"
     ipa_user: "{{ freeipa_vms_server_principal }}"
