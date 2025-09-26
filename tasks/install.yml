@@ -22,7 +22,7 @@
 - name: "Ensure hostgroups exist with running hostname"
   community.general.ipa_hostgroup:
     name: "{{ item }}"
-    #description: "Managed by ansible"
+    # description: "Managed by ansible"
     state: present
     host:
       - "{{ freeipa_vms_hostname }}"

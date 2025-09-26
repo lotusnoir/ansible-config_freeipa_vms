@@ -22,6 +22,7 @@
 ## Description
 
 Complete the vm enrollment after freeipa client installation, add the vms in hostgroups and create hba rules to access it
+
 ## Requirements
 
 none
@@ -39,7 +40,6 @@ See [variables](/defaults/main.yml) for more details.
           gather_facts: true
           roles:
             - role: ansible-config_freeipa_vms
-
 
 ## License
 

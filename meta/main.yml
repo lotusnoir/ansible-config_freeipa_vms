@@ -4,14 +4,14 @@ galaxy_info:
   role_name: config_freeipa_vms
   description: "Complete the vm enrollment after freeipa client installation, add the vms in hostgroups and create hba rules to access it"
   license: "Apache License, Version 2.0"
-  min_ansible_version: 2.8
+  min_ansible_version: "2.8"
 
   platforms:
     - name: "Ubuntu"
       versions:
         - "focal"
-        - "bionic"
         - "jammy"
+        - "noble"
     - name: "Debian"
       versions:
         - "buster"
@@ -20,7 +20,12 @@ galaxy_info:
     - name: "Rocky"
       versions:
         - "8"
+        - "9"
     - name: "OracleLinux"
+      versions:
+        - "8"
+        - "9"
+    - name: "RedHat"
       versions:
         - "8"
         - "9"

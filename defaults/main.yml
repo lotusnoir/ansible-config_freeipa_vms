@@ -13,18 +13,18 @@ freeipa_vms_os: "{{ ansible_distribution }} {{ ansible_distribution_version }}"
 freeipa_vms_platform: "{{ ansible_virtualization_type }}"
 freeipa_vms_mac: ""
 
-#Ensure hostgroups exist and assign current host
+# Ensure hostgroups exist and assign current host
 freeipa_vms_create_hostgroups: false
 freeipa_vms_hostgroups: "{{ group_names }}"
-#freeipa_vms_hostgroups:
+# freeipa_vms_hostgroups:
 #  - scp_system
 #  - env_test
 #  - group_web
 #  - apps_nginx
 
-#Create empty hbarule for current host. (another role manage the user rights on them)
+# Create empty hbarule for current host. (another role manage the user rights on them)
 freeipa_vms_hbarule_create: false
 
-#Just remove the rule as the vm will be removed from the hostgroups when it will be deleted
+# Just remove the rule as the vm will be removed from the hostgroups when it will be deleted
 freeipa_vms_remove_host: false
 freeipa_vms_remove_hba_rule: false
