@@ -31,6 +31,10 @@
     ipa_user: "{{ freeipa_vms_server_principal }}"
     ipa_pass: "{{ freeipa_vms_server_password }}"
   with_items: "{{ freeipa_vms_hostgroups }}"
+  register: ipa_hostgroup_result
+  retries: 5
+  delay: 10
+  until: ipa_hostgroup_result is succeeded
   when:
     - freeipa_vms_create_hostgroups is defined and freeipa_vms_create_hostgroups | bool
     - freeipa_vms_hostgroups is defined and freeipa_vms_hostgroups | length > 0
